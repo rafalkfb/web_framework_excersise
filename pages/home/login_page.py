@@ -20,16 +20,16 @@ class LoginPage(BasePage):
     _incorrect_credentials = "//span[contains(text(), 'Your username or password is invalid. Please try again.')]"
 
     def click_login_link(self):
-        self.element_click(self._login_link, 'xpath')
+        self.element_click(self._login_link, locator_type='xpath')
 
     def enter_email(self, email):
-        self.element_send_keys(email, self._email_field, 'id')
+        self.element_send_keys(email, locator=self._email_field, locator_type='id')
 
     def enter_password(self, password):
-        self.element_send_keys(password, self._password_field, 'id')
+        self.element_send_keys(password, locator=self._password_field, locator_type='id')
 
     def click_login_button(self):
-        self.element_click(self._login_button, 'xpath')
+        self.element_click(locator=self._login_button, locator_type='xpath')
 
     def login(self, email, password):
 
@@ -40,7 +40,7 @@ class LoginPage(BasePage):
         self.click_login_button()
 
     def verify_successful_login(self):
-        result = self.is_element_present(self._element_to_verify_login, "xpath")
+        result = self.is_element_present(locator=self._element_to_verify_login, locator_type="xpath")
         return result
 
     def verify_login_failed(self):
@@ -48,6 +48,6 @@ class LoginPage(BasePage):
         return result
 
     def clear_login_fields(self):
-        self.get_element(locator=self._email_field).clear()
-        self.get_element(locator=self._password_field).clear()
+        self.get_element(locator=self._email_field, locator_type='id').clear()
+        self.get_element(locator=self._password_field, locator_type='id').clear()
 

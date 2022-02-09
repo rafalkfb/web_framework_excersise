@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from base.selenium_driver import *
 from base.basepage import BasePage
 from selenium import webdriver  # delete after tests
@@ -26,17 +28,18 @@ class RegisterCoursesPage(BasePage):
     def enter_course_name(self, name):
         """
         Go to the courses page, enter into search box any course
+        Hit enter
         :param name:
         :return:
         """
         self.driver.get("https://courses.letskodeit.com/courses")
 
-        self.element_send_keys(name, self._search_box, 'xpath')
+        self.element_send_keys(name + Keys.ENTER, self._search_box, 'xpath')
         time.sleep(2)
 
     def select_course_to_enroll(self, full_course_name):
         """
-
+        Gets list of elements, search through them to find matching element
         :param full_course_name:
         :return:
         """
