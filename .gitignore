@@ -1,3 +1,2 @@
-/tests_cases/home/geckodriver.log
-/screenshots/
 *.log
+/screenshots/

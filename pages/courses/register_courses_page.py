@@ -41,6 +41,7 @@ class RegisterCoursesPage(BasePage):
         :return:
         """
 
+
     def enter_card_num(self, num):
         """
 
