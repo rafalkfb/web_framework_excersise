@@ -18,8 +18,8 @@ class RegisterCoursesTests(unittest.TestCase):
         self.test_status = CheckTestStatus(self.driver)
         self.courses = RegisterCoursesPage(self.driver)
 
-    def test_example(self):
-        time.sleep(3)
-
+    def test_course_page_enter(self):
         self.courses.enter_course_name("JavaScript")
-        assert True
+        self.courses.select_course_to_enroll("JavaScript for beginners")
+        result = self.courses.verify_title_match("JavaScript for beginners")
+        self.test_status.mark_final("Check if entered course page successfully", result, "Course page didn't open")
