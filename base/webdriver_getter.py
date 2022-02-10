@@ -46,6 +46,11 @@ class WebDriverCreate:
             driver = webdriver.Edge()
         elif self.browser == "firefox":
             driver = webdriver.Firefox()
+        elif self.browser == "noimages":
+            chrome_optio = webdriver.ChromeOptions()
+            prefs = {"profile.managed_default_content_settings.images": 2}
+            chrome_optio.add_experimental_option("prefs", prefs)
+            driver = webdriver.Chrome(chrome_options=chrome_optio)
         else:
             driver = webdriver.Chrome()
         # setting driver implicit time out for an element

@@ -18,7 +18,7 @@ class RegisterCoursesPage(BasePage):
     _search_box = "//input[@id='search']"
     _course = ""
     _all_courses = "//div[@id='course-list']//div[contains(@class, 'col-lg-4')]//a"  # list of elements
-    _enroll_button = "//button[normalize-space()='Enroll in Bundle']"
+    _enroll_button = "//button[normalize-space()='Enroll in Course']"
     _cc_num = "//input[@name='cardnumber']"  # driver.switch_to.frame(0) ?
     _cc_exp = "//input[@name='exp-date']"  # driver.switch_to.frame(1)
     _cc_cvv = "//input[@name='cvc']"  # driver.switch_to.frame(2)
@@ -44,9 +44,9 @@ class RegisterCoursesPage(BasePage):
         :param full_course_name:
         :return:
         """
-        # if not self.verify_title_match("All courses"):
-        #     self.driver.get("https://courses.letskodeit.com/courses")
-        #     self.log.warning("Function select_course_to_enroll wasn't called in the proper page")
+        if not self.verify_title_match("All Courses"):
+            self.driver.get("https://courses.letskodeit.com/courses")
+            self.log.warning("Function select_course_to_enroll wasn't called in the proper page")
         list_of_courses = self.get_element_list(locator=self._all_courses)
         print("list of courses length ", len(list_of_courses))
         for course in list_of_courses:
@@ -55,30 +55,40 @@ class RegisterCoursesPage(BasePage):
 
     def enter_card_num(self, num):
         """
-
+        Enter numbers to the card number input box
         :param num:
         :return:
         """
+        self.driver.switch_to.frame(0)
+        self.element_send_keys(num, locator=self._cc_num)
+        self.driver.switch_to.default_content()
 
     def enter_card_exp(self, exp):
         """
-
+        Enter numbers to the card expiration input box
         :param exp:
         :return:
         """
+        self.driver.switch_to.frame(1)
+        self.element_send_keys(exp, locator=self._cc_exp)
+        self.driver.switch_to.default_content()
 
     def enter_card_cvv(self, cvv):
         """
-
+        Enter numbers to the card cvv input box
         :param cvv:
         :return:
         """
+        self.driver.switch_to.frame(2)
+        self.element_send_keys(cvv, locator=self._cc_cvv)
+        self.driver.switch_to.default_content()
 
     def click_enroll_submit_button(self):
         """
-
+        Click enroll button
         :return:
         """
+        self.element_click(locator=self._enroll_button)
 
     def enter_credit_card_info(self, num, exp, cvv):
         """
@@ -89,6 +99,9 @@ class RegisterCoursesPage(BasePage):
         :param cvv:
         :return:
         """
+        self.enter_card_num(num)
+        self.enter_card_exp(exp)
+        self.enter_card_cvv(cvv)
 
     def enroll_course(self, num="", exp="", cvv=""):
         """
