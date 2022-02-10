@@ -47,14 +47,21 @@ class WebDriverCreate:
         elif self.browser == "firefox":
             driver = webdriver.Firefox()
         elif self.browser == "noimages":
-            chrome_optio = webdriver.ChromeOptions()
+            chrome_options = webdriver.ChromeOptions()
             prefs = {"profile.managed_default_content_settings.images": 2}
-            chrome_optio.add_experimental_option("prefs", prefs)
-            driver = webdriver.Chrome(chrome_options=chrome_optio)
+            chrome_options.add_argument("--headless")
+            chrome_options.add_experimental_option("prefs", prefs)
+            driver = webdriver.Chrome(options=chrome_options)
+        elif self.browser == "headless":
+            chrome_options = webdriver.ChromeOptions()
+            # prefs = {"profile.managed_default_content_settings.images": 2}
+            chrome_options.add_argument("--headless")
+            # chrome_options.add_experimental_option("prefs", prefs)
+            driver = webdriver.Chrome(options=chrome_options)
         else:
             driver = webdriver.Chrome()
         # setting driver implicit time out for an element
-        driver.implicitly_wait(5)
+        driver.implicitly_wait(3)
         # maximize the window
         driver.maximize_window()
         # loading browser with App URL

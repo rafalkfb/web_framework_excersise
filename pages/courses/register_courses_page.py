@@ -18,7 +18,7 @@ class RegisterCoursesPage(BasePage):
     _search_box = "//input[@id='search']"
     _course = ""
     _all_courses = "//div[@id='course-list']//div[contains(@class, 'col-lg-4')]//a"  # list of elements
-    _enroll_button = "//button[normalize-space()='Enroll in Course']"
+    _enroll_button = "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']"
     _cc_num = "//input[@name='cardnumber']"  # driver.switch_to.frame(0) ?
     _cc_exp = "//input[@name='exp-date']"  # driver.switch_to.frame(1)
     _cc_cvv = "//input[@name='cvc']"  # driver.switch_to.frame(2)
@@ -88,7 +88,8 @@ class RegisterCoursesPage(BasePage):
         Click enroll button
         :return:
         """
-        self.element_click(locator=self._enroll_button)
+        element = self.wait_for_element(locator=self._enroll_button)
+        self.element_click(element=element)
 
     def enter_credit_card_info(self, num, exp, cvv):
         """

@@ -240,7 +240,7 @@ class SeleniumDriver:
     #     self.driver = driver
     #     self.hw = SeleniumDriver(driver)
 
-    def wait_for_element(self, locator, locator_type='id', timeout=10, poll_frequency=0.5):
+    def wait_for_element(self, locator, locator_type='xpath', timeout=10, poll_frequency=0.5):
 
         element = None
         try:
