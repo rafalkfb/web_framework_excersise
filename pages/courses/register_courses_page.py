@@ -14,7 +14,7 @@ class RegisterCoursesPage(BasePage):
 
     _search_box = "//input[@id='search']"
     _course = ""
-    _all_courses = "//div[@id='course-list']//div[contains(@class, 'col-lg-4')]//a"  # list of elements
+    _all_courses = "//h4[@class='dynamic-heading' and contains(text(), '{0}')]"
     _enroll_button = "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']"
     _cc_num = "//input[@name='cardnumber']"  # driver.switch_to.frame(0) ?
     _cc_exp = "//input[@name='exp-date']"  # driver.switch_to.frame(1)
@@ -29,10 +29,8 @@ class RegisterCoursesPage(BasePage):
         :param name:
         :return:
         """
-        self.driver.get("https://courses.letskodeit.com/courses")
-
+        # self.driver.get("https://courses.letskodeit.com/courses")
         self.element_send_keys(name + Keys.ENTER, self._search_box, 'xpath')
-        time.sleep(2)
 
     def select_course_to_enroll(self, full_course_name):
         """
@@ -41,14 +39,7 @@ class RegisterCoursesPage(BasePage):
         :param full_course_name:
         :return:
         """
-        if not self.verify_title_match("All Courses"):
-            self.driver.get("https://courses.letskodeit.com/courses")
-            self.log.warning("Function select_course_to_enroll wasn't called in the proper page")
-        list_of_courses = self.get_element_list(locator=self._all_courses)
-        print("list of courses length ", len(list_of_courses))
-        for course in list_of_courses:
-            if full_course_name in self.get_text(element=course):
-                self.element_click(element=course)
+        self.element_click(locator=self._all_courses.format(full_course_name))
 
     def enter_card_num(self, num):
         """
