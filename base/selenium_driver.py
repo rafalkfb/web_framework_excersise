@@ -234,11 +234,44 @@ class SeleniumDriver:
         """
         self.driver.execute_script("window.scrollBy(0, {0});".format(how_much))
 
-    # class ExplicitWaitType:
+    def get_element_attribute_value(self, attribute, locator="", locator_type='xpath', element=None):
+        """
+        Get value of the attribute of element
+        :param attribute:
+        :param locator:
+        :param locator_type:
+        :param element:
+        :return:
+        """
+        if locator:
+            element = self.get_element(locator=locator, locator_type=locator_type)
+        return element.get_attribute(attribute)
 
-    # def __init__(self, driver):
-    #     self.driver = driver
-    #     self.hw = SeleniumDriver(driver)
+    def is_enabled(self, locator, locator_type="xpath", info=""):
+        """
+        Check if element is enabled
+        :param locator:
+        :param locator_type:
+        :param info:
+        :return:
+        """
+        element = self.get_element(locator=locator, locator_type=locator_type)
+        enabled = False
+        try:
+            attribute_value = self.get_element_attribute_value(attribute="disabled", element=element)
+            if attribute_value is not None:
+                enabled = element.is_enabled()
+            else:
+                value = self.get_element_attribute_value(attribute="class", element=element)
+                self.log.info("Attribute value From Application Web UI :: " + value)
+                enabled = not ("disabled" in value)
+            if enabled:
+                self.log.info("Element :: '" + info + "' is enabled")
+            else:
+                self.log.info("Element :: '" + info + "' is not enabled")
+        except NoSuchElementException:
+            self.log.error("Element :: '" + info + "' state could not be found")
+        return enabled
 
     def wait_for_element(self, locator, locator_type='xpath', timeout=10, poll_frequency=0.5):
 

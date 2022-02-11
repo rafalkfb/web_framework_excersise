@@ -9,7 +9,7 @@ class RegisterCoursesPage(BasePage):
     log = cl.custom_log(log_level=logging.DEBUG)
     
     def __init__(self, driver):
-        super(RegisterCoursesPage, self).__init__(driver)
+        super().__init__(driver)
         self.driver = driver
 
     _search_box = "//input[@id='search']"
@@ -29,7 +29,7 @@ class RegisterCoursesPage(BasePage):
         :param name:
         :return:
         """
-        # self.driver.get("https://courses.letskodeit.com/courses")
+        self.driver.get("https://courses.letskodeit.com/courses")
         self.element_send_keys(name + Keys.ENTER, self._search_box, 'xpath')
 
     def select_course_to_enroll(self, full_course_name):
