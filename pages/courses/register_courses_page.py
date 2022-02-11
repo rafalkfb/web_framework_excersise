@@ -115,6 +115,10 @@ class RegisterCoursesPage(BasePage):
         :param cvv:
         :return:
         """
+        self.click_enroll_submit_button()
+        self.scroll_down()
+        self.enter_credit_card_info(num, exp, cvv)
+        self.element_click(locator=self._submit_enroll)
 
     def verify_enroll_failed(self):
         """
@@ -122,5 +126,7 @@ class RegisterCoursesPage(BasePage):
         Need to wait sometimes a little for it to show
         :return:
         """
+        error_info = self.wait_for_element(locator=self._enroll_error_message)
+        return self.is_element_displayed(element=error_info)
 
 

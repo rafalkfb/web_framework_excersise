@@ -24,9 +24,12 @@ class RegisterCoursesTests(unittest.TestCase):
         self.test_status.mark_final("Check if entered course page successfully", result, "Course page didn't open")
 
     @pytest.mark.run(order=2)
-    def test_enter_card_info(self):
-        self.courses.click_enroll_submit_button()
-        self.courses.scroll_down()
-        self.courses.enter_credit_card_info(5168284143633649, 1224, 324)
-        self.courses.screen_shot("card info")
-        assert True
+    def test_buy(self):
+        # self.courses.click_enroll_submit_button()
+        # self.courses.scroll_down()
+        self.courses.enroll_course(5168284143633642, 1224, 324)
+        # self.courses.screen_shot("card info")
+        time.sleep(1)
+        res = self.courses.verify_enroll_failed()
+        self.test_status.mark_final(test_name="is error displayed", result=res, result_message="error is not displayed")
+

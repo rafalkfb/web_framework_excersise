@@ -103,7 +103,7 @@ class SeleniumDriver:
                 element = self.get_element(locator, locator_type)
             element.click()
             self.log.info("Clicked on element with locator: " + locator)
-        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException):
+        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):
             self.log.error("Cannot click on element with locator: " + locator)
             print_stack()
 
@@ -189,7 +189,7 @@ class SeleniumDriver:
             else:
                 self.log.warning("Element not displayed with locator: " + locator)
             return displayed
-        except NoSuchElementException:
+        except (NoSuchElementException, TimeoutException):
             self.log.error("Element not found with locator: " + locator)
             return False
 
@@ -250,10 +250,10 @@ class SeleniumDriver:
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency,
                                  ignored_exceptions=[NoSuchElementException,
                                                      ElementNotVisibleException,
-                                                     ElementNotSelectableException])
+                                                     ElementNotSelectableException,])
             element = wait.until(ec.visibility_of_element_located((by_type, locator)))
             self.log.info("Element appeared on the web page")
-        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException):
+        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):
             self.log.info("Element not appeared on the web page")
             print_stack()
         self.driver.implicitly_wait(10)  # set up to the default value

@@ -77,8 +77,8 @@ class CheckTestStatus(SeleniumDriver):
         if "FAIL" in self.result_list:
             self.log.error(test_name + "### TEST FAILED")
             self.result_list.clear()
-            assert False
+            return False
         else:
             self.log.info(test_name + "### TEST SUCCESSFUL")
             self.result_list.clear()
-            assert True
+            return True
