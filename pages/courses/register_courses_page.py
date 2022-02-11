@@ -1,10 +1,6 @@
 from selenium.webdriver.common.keys import Keys
-
 from base.selenium_driver import *
 from base.basepage import BasePage
-from selenium import webdriver  # delete after tests
-
-from pages.home.login_page import LoginPage
 
 
 class RegisterCoursesPage(BasePage):
@@ -14,6 +10,7 @@ class RegisterCoursesPage(BasePage):
     
     def __init__(self, driver):
         super(RegisterCoursesPage, self).__init__(driver)
+        self.driver = driver
 
     _search_box = "//input[@id='search']"
     _course = ""
@@ -23,7 +20,7 @@ class RegisterCoursesPage(BasePage):
     _cc_exp = "//input[@name='exp-date']"  # driver.switch_to.frame(1)
     _cc_cvv = "//input[@name='cvc']"  # driver.switch_to.frame(2)
     _submit_enroll = "//button[contains(@class, 'sp-buy')]"  # driver.switch_to.default_content()
-    _enroll_error_message = "//span[normalize-space()='Your card number is incorrect.']"
+    _enroll_error_message = "//span[normalize-space()='Your card number is invalid.']"
 
     def enter_course_name(self, name):
         """
@@ -118,7 +115,7 @@ class RegisterCoursesPage(BasePage):
         self.click_enroll_submit_button()
         self.scroll_down()
         self.enter_credit_card_info(num, exp, cvv)
-        self.element_click(locator=self._submit_enroll)
+        # self.element_click(locator=self._submit_enroll)
 
     def verify_enroll_failed(self):
         """
