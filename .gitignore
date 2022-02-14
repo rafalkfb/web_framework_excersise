@@ -1,7 +1,9 @@
 *.log
 /screenshots/
 *.pyc
-*/__pycache__/*
+.*
 venv
 .venv
 *.exe
+__pycache__/
+!/.gitignore
