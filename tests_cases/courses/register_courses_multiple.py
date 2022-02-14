@@ -22,10 +22,10 @@ class RegisterCoursesTests(unittest.TestCase):
     @pytest.mark.run(order=1)
     @data(("JavaScript for beginners", 5168284143633642, 1224, 324))
     @unpack
-    def test_course_page_enter(self, course_name, cc_num, cc_exp, cc_cvv):
+    def test_course_page_enter(self, course_name, cc_num, credit_card_exp, credit_card_cvv):
         self.courses.enter_course_name(course_name)
         self.courses.select_course_to_enroll(course_name)
-        self.courses.enroll_course(cc_num, cc_exp, cc_cvv)
+        self.courses.enroll_course(cc_num, credit_card_exp, credit_card_cvv)
         result = self.courses.verify_enroll_failed()
         self.test_status.mark_final("is error displayed", result, "error is not displayed")
         self.courses.element_click("ALL COURSES", 'linktext')

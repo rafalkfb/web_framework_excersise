@@ -12,6 +12,10 @@ Example:
 """
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.opera import OperaDriverManager
 
 
 class WebDriverCreate:
@@ -43,23 +47,25 @@ class WebDriverCreate:
         """
         base_url = "https://courses.letskodeit.com/"
         if self.browser == "edge":
-            driver = webdriver.Edge()
+            driver = webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
         elif self.browser == "firefox":
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+        elif self.browser == "opera":
+            driver = webdriver.Opera(executable_path=OperaDriverManager().install())
         elif self.browser == "noimages":
             chrome_options = webdriver.ChromeOptions()
             prefs = {"profile.managed_default_content_settings.images": 2}
-            chrome_options.add_argument("--headless")
             chrome_options.add_experimental_option("prefs", prefs)
-            driver = webdriver.Chrome(options=chrome_options)
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+            # driver = webdriver.Chrome(options=chrome_options)
         elif self.browser == "headless":
             chrome_options = webdriver.ChromeOptions()
             # prefs = {"profile.managed_default_content_settings.images": 2}
             chrome_options.add_argument("--headless")
             chrome_options.add_argument('--lang=en')
-            driver = webdriver.Chrome(options=chrome_options)
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
         else:
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome(ChromeDriverManager().install())
         # setting driver implicit time out for an element
         driver.implicitly_wait(3)
         # maximize the window
