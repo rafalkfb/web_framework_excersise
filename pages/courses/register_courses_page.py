@@ -47,7 +47,8 @@ class RegisterCoursesPage(BasePage):
         :param num:
         :return:
         """
-        self.switch_frame_by_index(locator=self._cc_num)
+        # self.switch_frame_by_index(locator=self._cc_num)
+        self.driver.switch_to.frame(0)
         self.element_send_keys(num, locator=self._cc_num)
         self.driver.switch_to.default_content()
 
@@ -57,7 +58,8 @@ class RegisterCoursesPage(BasePage):
         :param exp:
         :return:
         """
-        self.switch_frame_by_index(locator=self._cc_exp)
+        # self.switch_frame_by_index(locator=self._cc_exp)
+        self.driver.switch_to.frame(1)
         self.element_send_keys(exp, locator=self._cc_exp)
         self.driver.switch_to.default_content()
 
@@ -67,7 +69,8 @@ class RegisterCoursesPage(BasePage):
         :param cvv:
         :return:
         """
-        self.switch_frame_by_index(locator=self._cc_cvv)
+        # self.switch_frame_by_index(locator=self._cc_cvv)
+        self.driver.switch_to.frame(2)
         self.element_send_keys(cvv, locator=self._cc_cvv)
         self.driver.switch_to.default_content()
 

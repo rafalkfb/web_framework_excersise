@@ -233,6 +233,7 @@ class SeleniumDriver:
         :return:
         """
         self.driver.execute_script("window.scrollBy(0, {0});".format(how_much))
+        self.log.info("Scrolled on the page")
 
     def get_element_attribute_value(self, attribute, locator="", locator_type='xpath', element=None):
         """
