@@ -22,12 +22,3 @@ class RegisterCoursesTests(unittest.TestCase):
         self.courses.enroll_course(5168284143633642, 1224, 324)
         result = self.courses.verify_enroll_failed()
         self.test_status.mark_final("is error displayed", result, "error is not displayed")
-        # result = self.courses.verify_title_match("JavaScript for beginners")
-        # self.test_status.mark_final("Check if entered course page successfully", result, "Course page didn't open")
-
-    # @pytest.mark.run(order=2)
-    # def test_buy(self):
-    #     self.courses.enroll_course(5168284143633642, 1224, 324)
-    #     res = self.courses.verify_enroll_failed()
-    #     self.test_status.mark_final(test_name="is error displayed", result=res, result_message="error is not displayed")
-

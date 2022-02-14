@@ -273,6 +273,30 @@ class SeleniumDriver:
             self.log.error("Element :: '" + info + "' state could not be found")
         return enabled
 
+    def switch_frame_by_index(self, locator, locator_type='xpath'):
+        """
+        Get iframe index using element locator inside iframe
+        :param locator:
+        :param locator_type:
+        :return:
+        """
+        result = False
+        try:
+            iframe_list = self.get_element_list("//iframe", locator_type='xpath')
+            if len(iframe_list) == 0:
+                self.log.warning("There are no iframes")
+            for i in range(len(iframe_list)):
+                self.driver.switch_to.frame(iframe_list[i])  # or i +1 ?
+                result = self.is_element_present(locator=locator, locator_type=locator_type)
+                if result:
+                    self.log.info("iframe index is: " + str(iframe_list[i]))
+                    break
+                self.driver.switch_to.default_content()
+            return result
+        except:
+            self.log.error("iframe index not found")
+            return result
+
     def wait_for_element(self, locator, locator_type='xpath', timeout=10, poll_frequency=0.5):
 
         element = None
@@ -283,7 +307,7 @@ class SeleniumDriver:
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency,
                                  ignored_exceptions=[NoSuchElementException,
                                                      ElementNotVisibleException,
-                                                     ElementNotSelectableException,])
+                                                     ElementNotSelectableException, ])
             element = wait.until(ec.visibility_of_element_located((by_type, locator)))
             self.log.info("Element appeared on the web page")
         except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):

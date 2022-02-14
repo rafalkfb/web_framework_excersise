@@ -12,7 +12,7 @@ class RegisterCoursesPage(BasePage):
         super().__init__(driver)
         self.driver = driver
 
-    _search_box = "//input[@id='search']"
+    _search_box = "input#search"      # "//input[@id='search']"
     _course = ""
     _all_courses = "//h4[@class='dynamic-heading' and contains(text(), '{0}')]"
     _enroll_button = "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']"
@@ -30,7 +30,7 @@ class RegisterCoursesPage(BasePage):
         :return:
         """
         self.driver.get("https://courses.letskodeit.com/courses")
-        self.element_send_keys(name + Keys.ENTER, self._search_box, 'xpath')
+        self.element_send_keys(name + Keys.ENTER, self._search_box, 'css')
 
     def select_course_to_enroll(self, full_course_name):
         """
@@ -47,7 +47,7 @@ class RegisterCoursesPage(BasePage):
         :param num:
         :return:
         """
-        self.driver.switch_to.frame(0)
+        self.switch_frame_by_index(locator=self._cc_num)
         self.element_send_keys(num, locator=self._cc_num)
         self.driver.switch_to.default_content()
 
@@ -57,7 +57,7 @@ class RegisterCoursesPage(BasePage):
         :param exp:
         :return:
         """
-        self.driver.switch_to.frame(1)
+        self.switch_frame_by_index(locator=self._cc_exp)
         self.element_send_keys(exp, locator=self._cc_exp)
         self.driver.switch_to.default_content()
 
@@ -67,7 +67,7 @@ class RegisterCoursesPage(BasePage):
         :param cvv:
         :return:
         """
-        self.driver.switch_to.frame(2)
+        self.switch_frame_by_index(locator=self._cc_cvv)
         self.element_send_keys(cvv, locator=self._cc_cvv)
         self.driver.switch_to.default_content()
 
