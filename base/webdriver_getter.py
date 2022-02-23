@@ -52,6 +52,10 @@ class WebDriverCreate:
             driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         elif self.browser == "opera":
             driver = webdriver.Opera(executable_path=OperaDriverManager().install())
+        elif self.browser == "remote":
+            options = webdriver.ChromeOptions()
+            options.set_capability("loggingPrefs", {'performance': 'ALL'})
+            driver = webdriver.Remote(command_executor="127.0.0.1:4444", options=options)
         elif self.browser == "noimages":
             chrome_options = webdriver.ChromeOptions()
             prefs = {"profile.managed_default_content_settings.images": 2}
