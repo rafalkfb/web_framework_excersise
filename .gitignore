@@ -7,3 +7,4 @@ venv
 *.exe
 __pycache__/
 !/.gitignore
+/results/
