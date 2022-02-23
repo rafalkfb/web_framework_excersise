@@ -3,7 +3,7 @@ services:
   mypython:
     build: .
     volumes:
-      - "./test_cases/courses/register_courses_test.py:/usr/src/app/register_courses_test.py"
+      - "./:/usr/src/app/"
   selenium-hub:
     restart: always
     image: selenium/hub
