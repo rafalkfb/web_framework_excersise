@@ -8,7 +8,7 @@ from ddt import ddt, data, unpack
 
 @pytest.mark.usefixtures("one_time_set_up", "set_up")
 @ddt
-class RegisterCoursesTests(unittest.TestCase):
+class RegisterCoursesMultiplyTests(unittest.TestCase):
 
     @pytest.fixture(autouse=True)
     def class_setup(self, one_time_set_up):
