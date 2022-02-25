@@ -56,6 +56,10 @@ class WebDriverCreate:
             options = webdriver.ChromeOptions()
             options.set_capability("loggingPrefs", {'performance': 'ALL'})
             driver = webdriver.Remote(command_executor="127.0.0.1:4444", options=options)
+        elif self.browser == "docker-remote":
+            options = webdriver.ChromeOptions()
+            options.set_capability("loggingPrefs", {'performance': 'ALL'})
+            driver = webdriver.Remote(command_executor="http://selenium-hub:4444", options=options)
         elif self.browser == "noimages":
             chrome_options = webdriver.ChromeOptions()
             prefs = {"profile.managed_default_content_settings.images": 2}
