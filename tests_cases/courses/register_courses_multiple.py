@@ -1,5 +1,4 @@
 import pytest
-from selenium.webdriver.common.by import By
 
 from pages.courses.register_courses_page import RegisterCoursesPage
 import unittest
@@ -20,7 +19,8 @@ class RegisterCoursesTests(unittest.TestCase):
         self.courses = RegisterCoursesPage(self.driver)
 
     @pytest.mark.run(order=1)
-    @data(("JavaScript for beginners", 5168284143633642, 1224, 324))
+    @data(("JavaScript for beginners", 5168284143633642, 1224, 324),
+          ("Learn Python 3 from scratch", 5168284143633642, 1224, 324))
     @unpack
     def test_course_page_enter(self, course_name, credit_card_num, credit_card_exp, credit_card_cvv):
         self.courses.enter_course_name(course_name)
