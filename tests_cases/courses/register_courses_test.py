@@ -21,7 +21,5 @@ class RegisterCoursesTests(unittest.TestCase):
         self.courses.enter_course_name("JavaScript")
         self.courses.select_course_to_enroll("JavaScript for beginners")
         self.courses.enroll_course(5168284143633642, 1224, 324)
-        time.sleep(2)
-
         result = self.courses.verify_enroll_failed()
         self.test_status.mark_final("is error displayed", result, "error is not displayed")

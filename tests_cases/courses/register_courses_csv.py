@@ -20,6 +20,7 @@ class RegisterCoursesCSVTests(unittest.TestCase):
 
     def setUp(self) -> None:
         yield
+        # return to all page courses after each test
         self.courses.element_click("ALL COURSES", 'linktext')
 
     @pytest.mark.run(order=1)

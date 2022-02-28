@@ -314,5 +314,5 @@ class SeleniumDriver:
         except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):
             self.log.info("Element not appeared on the web page")
             print_stack()
-        self.driver.implicitly_wait(10)  # set up to the default value
+        self.driver.implicitly_wait(5)  # set up to the default value
         return element

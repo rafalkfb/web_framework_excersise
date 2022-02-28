@@ -1,5 +1,5 @@
 import pytest
-from base.webdriver_getter import WebDriverCreate
+from base.browser_factory import BrowserFactory
 from pages.home.login_page import LoginPage
 
 
@@ -13,8 +13,8 @@ def set_up():
 @pytest.fixture(scope="class")  # read about different scopes
 def one_time_set_up(request, browser):
     # print("Running general onetime setup")
-    wdc = WebDriverCreate(browser)
-    driver = wdc.get_webdriver_instance()
+    driver = BrowserFactory().webdriver_instance(browser)
+    driver.get("https://courses.letskodeit.com/")
     log_page = LoginPage(driver)
     log_page.login("test@email.com", "abcabc")
     if request.cls is not None:      # read more about it
