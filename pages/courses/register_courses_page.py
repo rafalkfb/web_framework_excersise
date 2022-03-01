@@ -1,9 +1,9 @@
 from selenium.webdriver.common.keys import Keys
 from base.selenium_driver import *
-from base.basepage import BasePage
+from configfiles.config_data import Config
 
 
-class RegisterCoursesPage(BasePage):
+class RegisterCoursesPage(SeleniumDriver):
     
     # overrides object from SeleniumDriver, so the name will indicate that the error comes from this class
     log = cl.custom_log(log_level=logging.DEBUG)
@@ -12,15 +12,14 @@ class RegisterCoursesPage(BasePage):
         super().__init__(driver)
         self.driver = driver
 
-    _search_box = "input#search"      # "//input[@id='search']"
-    _course = ""
-    _all_courses = "//h4[@class='dynamic-heading' and contains(text(), '{0}')]"
-    _enroll_button = "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']"
-    _cc_num = "//input[@name='cardnumber']"  # driver.switch_to.frame(0) ?
-    _cc_exp = "//input[@name='exp-date']"  # driver.switch_to.frame(1)
-    _cc_cvv = "//input[@name='cvc']"  # driver.switch_to.frame(2)
-    _submit_enroll = "//button[contains(@class, 'sp-buy')]"  # driver.switch_to.default_content()
-    _enroll_error_message = "//span[normalize-space()='Your card number is invalid.']"
+    _search_box = (By.CSS_SELECTOR, "input#search")      # "//input[@id='search']"
+    _all_courses = (By.XPATH, "//h4[@class='dynamic-heading' and contains(text(), '{0}')]")
+    _enroll_button = (By.XPATH, "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']")
+    _cc_num = (By.XPATH, "//input[@name='cardnumber']")  # driver.switch_to.frame(0) ?
+    _cc_exp = (By.XPATH, "//input[@name='exp-date']")  # driver.switch_to.frame(1)
+    _cc_cvv = (By.XPATH, "//input[@name='cvc']")  # driver.switch_to.frame(2)
+    _submit_enroll = (By.XPATH, "//button[contains(@class, 'sp-buy')]")  # driver.switch_to.default_content()
+    _enroll_error_message = (By.XPATH, "//span[normalize-space()='Your card number is invalid.']")
 
     def enter_course_name(self, name):
         """
@@ -29,8 +28,8 @@ class RegisterCoursesPage(BasePage):
         :param name:
         :return:
         """
-        self.driver.get("https://courses.letskodeit.com/courses")
-        self.element_send_keys(name + Keys.ENTER, self._search_box, 'css')
+        self.driver.get(Config.ALL_COURSES_PAGE)
+        self.element_send_keys(name + Keys.ENTER, self._search_box)
 
     def select_course_to_enroll(self, full_course_name):
         """
@@ -39,7 +38,10 @@ class RegisterCoursesPage(BasePage):
         :param full_course_name:
         :return:
         """
-        self.element_click(locator=self._all_courses.format(full_course_name))
+        by_type, locator = self._all_courses
+        locator = locator.format(full_course_name)
+        locator_tuple = (by_type, locator)
+        self.element_click(locator_tuple)
 
     def enter_card_num(self, num):
         """
@@ -49,7 +51,7 @@ class RegisterCoursesPage(BasePage):
         """
         # self.switch_frame_by_index(locator=self._cc_num)
         self.driver.switch_to.frame(0)
-        self.element_send_keys(num, locator=self._cc_num)
+        self.element_send_keys(num, self._cc_num)
         self.driver.switch_to.default_content()
 
     def enter_card_exp(self, exp):
@@ -60,7 +62,7 @@ class RegisterCoursesPage(BasePage):
         """
         # self.switch_frame_by_index(locator=self._cc_exp)
         self.driver.switch_to.frame(1)
-        self.element_send_keys(exp, locator=self._cc_exp)
+        self.element_send_keys(exp, self._cc_exp)
         self.driver.switch_to.default_content()
 
     def enter_card_cvv(self, cvv):
@@ -71,7 +73,7 @@ class RegisterCoursesPage(BasePage):
         """
         # self.switch_frame_by_index(locator=self._cc_cvv)
         self.driver.switch_to.frame(2)
-        self.element_send_keys(cvv, locator=self._cc_cvv)
+        self.element_send_keys(cvv, self._cc_cvv)
         self.driver.switch_to.default_content()
 
     def click_enroll_submit_button(self):
@@ -79,8 +81,7 @@ class RegisterCoursesPage(BasePage):
         Click enroll button
         :return:
         """
-        element = self.wait_for_element(locator=self._enroll_button)
-        self.element_click(element=element)
+        self.element_click(self._enroll_button)
 
     def enter_credit_card_info(self, num, exp, cvv):
         """
@@ -117,7 +118,7 @@ class RegisterCoursesPage(BasePage):
         Need to wait sometimes a little for it to show
         :return:
         """
-        error_info = self.wait_for_element(locator=self._enroll_error_message)
-        return self.is_element_displayed(element=error_info)
+        error_info = self.wait_for_element(self._enroll_error_message)
+        return self.is_element_displayed(self._enroll_error_message)
 
 

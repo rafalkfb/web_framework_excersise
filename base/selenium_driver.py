@@ -39,168 +39,142 @@ class SeleniumDriver:
             self.log.error("### Exception Occurred while taking screenshot")
             print_stack()
 
-    def get_by_type(self, locator_type='xpath'):
-        locator_type = locator_type.lower()
-        if locator_type == "id":
-            return By.ID
-        elif locator_type == "name":
-            return By.NAME
-        elif locator_type == "xpath":
-            return By.XPATH
-        elif locator_type == "css":
-            return By.CSS_SELECTOR
-        elif locator_type == "classname":
-            return By.CLASS_NAME
-        elif locator_type == "linktext":
-            return By.LINK_TEXT
-        else:
-            self.log.error("Locator type " + locator_type + " not correct/supported")
-        return False
-
     def get_title(self):
         return self.driver.title
 
-    def get_element(self, locator, locator_type='xpath'):
+    def get_element(self, locator_tuple):
 
         element = None
+        by_type, locator = locator_tuple
         try:
-            locator_type = locator_type.lower()
-            by_type = self.get_by_type(locator_type)
             element = self.driver.find_element(by_type, locator)
-            self.log.info("Element found with locator: " + locator)
+            self.log.info("Element found with locator: " + str(locator_tuple))
         except NoSuchElementException:
-            self.log.error("Element not found with locator: " + locator)
+            self.log.error("Element not found with locator: " + str(locator_tuple))
         return element
 
-    def get_element_list(self, locator, locator_type="xpath"):
+    def get_element_list(self, locator_tuple):
         """
         Get elements
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :return:
         """
         element = None
+        by_type, locator = locator_tuple
         try:
-            locator_type = locator_type.lower()
-            by_type = self.get_by_type(locator_type)
             element = self.driver.find_elements(by_type, locator)
-            self.log.info("Element list found with locator: " + locator)
+            self.log.info("Element list found with locator: " + str(locator_tuple))
         except NoSuchElementException:
-            self.log.error("Element list not found with locator: " + locator)
+            self.log.error("Element list not found with locator: " + str(locator_tuple))
         return element
 
-    def element_click(self, locator="", locator_type="xpath", element=None):
+    def element_click(self, locator_tuple=None, element=None):
         """
         Click on an element
         Either provide element or a combination of locator and locator_type
-        :param locator:
-        :param locator_type:
+        :param locator_tuple
         :param element:
         :return:
         """
         try:
-            if locator:  # if locator is empty, means element should be already provided
-                element = self.get_element(locator, locator_type)
+            if locator_tuple:
+                element = self.get_element(locator_tuple)
             element.click()
-            self.log.info("Clicked on element with locator: " + locator)
-        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):
-            self.log.error("Cannot click on element with locator: " + locator)
+            self.log.info("Clicked on element with locator: " + str(locator_tuple))
+        except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException):
+            self.log.error("Cannot click on element with locator: " + str(locator_tuple))
             print_stack()
 
-    def element_send_keys(self, data, locator="", locator_type="xpath", element=None):
+    def element_send_keys(self, data, locator_tuple=None, element=None):
         """
         Get text into an element
         Either provide element or a combination of locator and locator_type
         :param element:
         :param data:
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :return:
         """
         try:
-            if locator:
-                element = self.get_element(locator, locator_type)
+            if locator_tuple:
+                element = self.get_element(locator_tuple)
             element.send_keys(data)
-            self.log.info("Send text on element with locator: " + locator)
+            self.log.info("Send text on element with locator: " + str(locator_tuple))
         except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException):
-            self.log.error("Cannot send text on element with locator: " + locator)
+            self.log.error("Cannot send text on element with locator: " + str(locator_tuple))
             print_stack()
 
-    def get_text(self, locator="", locator_type="xpath", element=None, info=""):
+    def get_text(self, locator_tuple=None, element=None):
         """
         Get 'Text' of an element
         Either provide element or a combination of locator and locator_type
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :param element:
-        :param info:
         :return:
         """
         try:
-            if locator:
-                element = self.get_element(locator, locator_type)
+            if locator_tuple:
+                element = self.get_element(locator_tuple)
             text = element.text
             if len(text) == 0:
                 text = element.get_attribute("innerText")
             if len(text) != 0:
-                self.log.info("Getting text on element :: " + info + " locator: " + locator)
+                self.log.info("Getting text on element :: " + str(locator_tuple))
                 self.log.info("The text is :: '" + text + "'")
                 text = text.strip()
         except:
-            self.log.error("Failed to get text on element " + info)
+            self.log.error("Failed to get text on element " + str(locator_tuple))
             text = None
         return text
 
-    def is_element_present(self, locator="", locator_type="xpath", element=None):
+    def is_element_present(self, locator_tuple=None, element=None):
         """
         Check if element is displayed
         Either provide element or a combination of locator and locator_type
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :param element:
         :return:
         """
         try:
-            if locator:
-                element = self.get_element(locator, locator_type)
+            if locator_tuple:
+                element = self.get_element(locator_tuple)
             if element is not None:
-                self.log.info("Element present with locator: " + locator)
+                self.log.info("Element present with locator: " + str(locator_tuple))
                 return True
         except NoSuchElementException:
-            self.log.error("Element not present with locator: " + locator)
+            self.log.error("Element not present with locator: " + str(locator_tuple))
             return False
 
-    def is_element_displayed(self, locator="", locator_type="xpath", element=None):
+    def is_element_displayed(self, locator_tuple=None, element=None):
         """
         Check if element is displayed, not only present
         Either provide element or a combination of locator and locatorType
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :param element:
         :return:
         """
         displayed = False
         try:
-            if locator:  # This means if locator is not empty
-                element = self.get_element(locator, locator_type)
+            if locator_tuple:
+                element = self.get_element(locator_tuple)
             if element is not None:
                 displayed = element.is_displayed()
-                self.log.info("Element is displayed with locator: " + locator)
+                self.log.info("Element is displayed with locator: " + str(locator_tuple))
             else:
-                self.log.warning("Element not displayed with locator: " + locator)
+                self.log.warning("Element not displayed with locator: " + str(locator_tuple))
             return displayed
         except (NoSuchElementException, TimeoutException):
-            self.log.error("Element not found with locator: " + locator)
+            self.log.error("Element not found with locator: " + str(locator_tuple))
             return False
 
-    def element_present_check(self, locator, by_type):
+    def element_present_check(self, locator_tuple):
 
+        by_type, locator = locator_tuple
         elements = self.driver.find_elements(by_type, locator)
         if len(elements) > 0:
-            self.log.info('Element found with locator' + locator)
+            self.log.info('Element found with locator' + str(locator_tuple))
             return True
         else:
-            self.log.info('Element not found with locator' + locator)
+            self.log.info('Element not found with locator' + str(locator_tuple))
             return False
 
     def verify_title_contains(self, title: str):
@@ -235,28 +209,25 @@ class SeleniumDriver:
         self.driver.execute_script("window.scrollBy(0, {0});".format(how_much))
         self.log.info("Scrolled on the page")
 
-    def get_element_attribute_value(self, attribute, locator="", locator_type='xpath', element=None):
+    def get_element_attribute_value(self, attribute, locator_tuple=None, element=None):
         """
         Get value of the attribute of element
         :param attribute:
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :param element:
         :return:
         """
-        if locator:
-            element = self.get_element(locator=locator, locator_type=locator_type)
+        if locator_tuple:
+            element = self.get_element(locator_tuple)
         return element.get_attribute(attribute)
 
-    def is_enabled(self, locator, locator_type="xpath", info=""):
+    def is_enabled(self, locator_tuple):
         """
         Check if element is enabled
-        :param locator:
-        :param locator_type:
-        :param info:
+        :param locator_tuple:
         :return:
         """
-        element = self.get_element(locator=locator, locator_type=locator_type)
+        element = self.get_element(locator_tuple)
         enabled = False
         try:
             attribute_value = self.get_element_attribute_value(attribute="disabled", element=element)
@@ -267,28 +238,27 @@ class SeleniumDriver:
                 self.log.info("Attribute value From Application Web UI :: " + value)
                 enabled = not ("disabled" in value)
             if enabled:
-                self.log.info("Element :: '" + info + "' is enabled")
+                self.log.info("Element :: '" + str(locator_tuple) + "' is enabled")
             else:
-                self.log.info("Element :: '" + info + "' is not enabled")
+                self.log.info("Element :: '" + str(locator_tuple) + "' is not enabled")
         except NoSuchElementException:
-            self.log.error("Element :: '" + info + "' state could not be found")
+            self.log.error("Element :: '" + str(locator_tuple) + "' state could not be found")
         return enabled
 
-    def switch_frame_by_index(self, locator, locator_type='xpath'):
+    def switch_frame_by_index(self, locator_tuple):
         """
         Get iframe index using element locator inside iframe
-        :param locator:
-        :param locator_type:
+        :param locator_tuple:
         :return:
         """
         result = False
         try:
-            iframe_list = self.get_element_list("//iframe", locator_type='xpath')
+            iframe_list = self.get_element_list((By.XPATH, "//iframe"))
             if len(iframe_list) == 0:
                 self.log.warning("There are no iframes")
             for i in range(len(iframe_list)):
                 self.driver.switch_to.frame(iframe_list[i])  # or i +1 ?
-                result = self.is_element_present(locator=locator, locator_type=locator_type)
+                result = self.is_element_present(locator_tuple)
                 if result:
                     self.log.info("iframe index is: " + str(iframe_list[i]))
                     break
@@ -298,21 +268,20 @@ class SeleniumDriver:
             self.log.error("iframe index not found")
             return result
 
-    def wait_for_element(self, locator, locator_type='xpath', timeout=10, poll_frequency=0.5):
+    def wait_for_element(self, locator_tuple, timeout=10, poll_frequency=0.5):
 
         element = None
         try:
             self.driver.implicitly_wait(0)  # just in case you need to use this method, do not mix imp and exp ways
-            by_type = self.get_by_type(locator_type)
             self.log.info("Waiting for maximum :: " + str(timeout) + " :: seconds for element to be visible")
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency,
                                  ignored_exceptions=[NoSuchElementException,
                                                      ElementNotVisibleException,
                                                      ElementNotSelectableException, ])
-            element = wait.until(ec.visibility_of_element_located((by_type, locator)))
+            element = wait.until(ec.visibility_of_element_located(locator_tuple))
             self.log.info("Element appeared on the web page")
         except (NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException, TimeoutException):
             self.log.info("Element not appeared on the web page")
             print_stack()
-        self.driver.implicitly_wait(5)  # set up to the default value
+        self.driver.implicitly_wait(10)  # set up to the default value
         return element

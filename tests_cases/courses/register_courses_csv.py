@@ -1,4 +1,6 @@
 import pytest
+from selenium.webdriver.common.by import By
+
 from pages.courses.register_courses_page import RegisterCoursesPage
 import unittest
 from utilities.checkteststatus import CheckTestStatus
@@ -21,7 +23,7 @@ class RegisterCoursesCSVTests(unittest.TestCase):
     def setUp(self) -> None:
         yield
         # return to all page courses after each test
-        self.courses.element_click("ALL COURSES", 'linktext')
+        self.courses.element_click((By.LINK_TEXT, "ALL COURSES"))
 
     @pytest.mark.run(order=1)
     @data(*get_csv_data("testdata.csv"))  # * means there could be multiple arguments

@@ -1,6 +1,7 @@
 import pytest
 from base.browser_factory import BrowserFactory
 from pages.home.login_page import LoginPage
+from configfiles.config_data import Config
 
 
 @pytest.fixture()
@@ -14,9 +15,9 @@ def set_up():
 def one_time_set_up(request, browser):
     # print("Running general onetime setup")
     driver = BrowserFactory().webdriver_instance(browser)
-    driver.get("https://courses.letskodeit.com/")
+    driver.get(Config.HOME_PAGE)
     log_page = LoginPage(driver)
-    log_page.login("test@email.com", "abcabc")
+    log_page.login(Config.LOGIN_EMAIL, Config.LOGIN_PASSWORD)
     if request.cls is not None:      # read more about it
         request.cls.driver = driver
 
