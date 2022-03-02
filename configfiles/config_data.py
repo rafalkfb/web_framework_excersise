@@ -14,6 +14,7 @@ class Config:
     NAVIGATION_ALL_COURSES = (By.LINK_TEXT, "ALL COURSES")
     NAVIGATION_SUPPORT = (By.LINK_TEXT, "SUPPORT")
     NAVIGATION_MY_COURSES = (By.LINK_TEXT, "MY COURSES")
+    NAVIGATION_LOGOUT = (By.LINK_TEXT, "Logout")
 
     # Login page locators
     LINK_TO_LOGIN_PAGE = (By.XPATH, "//a[@href='/login']")

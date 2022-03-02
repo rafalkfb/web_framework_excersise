@@ -21,3 +21,8 @@ class NavigationPanel(SeleniumDriver):
 
     def click_my_courses(self):
         self.element_click(Config.NAVIGATION_MY_COURSES)
+
+    def click_log_out(self):
+        self.element_click(Config.NAVIGATION_USER_TRIANGLE)
+        self.element_click(Config.NAVIGATION_LOGOUT)
+        
