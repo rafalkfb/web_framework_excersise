@@ -1,5 +1,5 @@
 from base.selenium_driver import *
-from base.basepage import BasePage
+from configfiles.config_data import Config
 
 
 class LoginPage(SeleniumDriver):
@@ -11,25 +11,17 @@ class LoginPage(SeleniumDriver):
         super().__init__(driver)
         self.driver = driver
 
-    # locators
-    _login_link = (By.XPATH, "//a[@href='/login']")
-    _email_field = (By.ID, "email")
-    _password_field = (By.ID, "password")
-    _login_button = (By.XPATH, "//input[@type='submit']")
-    _element_to_verify_login = (By.XPATH, "//a[@class='dynamic-link']//span[@class='caret']")
-    _incorrect_credentials = (By.XPATH, "//span[contains(text(), 'Your username or password is invalid')]")
-
     def click_login_link(self):
-        self.element_click(self._login_link)
+        self.element_click(Config.LINK_TO_LOGIN_PAGE)
 
     def enter_email(self, email):
-        self.element_send_keys(email, self._email_field)
+        self.element_send_keys(email, Config.LOGIN_PAGE_EMAIL_FIELD)
 
     def enter_password(self, password):
-        self.element_send_keys(password, self._password_field)
+        self.element_send_keys(password, Config.LOGIN_PAGE_PASSWORD_FIELD)
 
     def click_login_button(self):
-        self.element_click(self._login_button)
+        self.element_click(Config.LOGIN_PAGE_LOGIN_BUTTON)
 
     def login(self, email, password):
 
@@ -40,14 +32,14 @@ class LoginPage(SeleniumDriver):
         self.click_login_button()
 
     def verify_successful_login(self):
-        result = self.is_element_present(self._element_to_verify_login)
+        result = self.is_element_present(Config.ELEMENT_TO_VERIFY_SUCCESSFUL_LOGIN)
         return result
 
     def verify_login_failed(self):
-        result = self.is_element_present(self._incorrect_credentials)
+        result = self.is_element_present(Config.LOGIN_PAGE_INCORRECT_CREDENTIALS_INFO)
         return result
 
     def clear_login_fields(self):
-        self.get_element(self._email_field).clear()
-        self.get_element(self._password_field).clear()
+        self.get_element(Config.LOGIN_PAGE_EMAIL_FIELD).clear()
+        self.get_element(Config.LOGIN_PAGE_PASSWORD_FIELD).clear()
 

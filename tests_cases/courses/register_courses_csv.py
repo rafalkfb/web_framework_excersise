@@ -6,6 +6,7 @@ import unittest
 from utilities.checkteststatus import CheckTestStatus
 from ddt import ddt, data, unpack
 from utilities.read_data import get_csv_data
+from configfiles.config_data import Config
 
 
 @pytest.mark.usefixtures("one_time_set_up")
@@ -23,7 +24,7 @@ class RegisterCoursesCSVTests(unittest.TestCase):
     def setUp(self) -> None:
         yield
         # return to all page courses after each test
-        self.courses.element_click((By.LINK_TEXT, "ALL COURSES"))
+        self.courses.element_click(Config.ALL_COURSES_PAGE)
 
     @pytest.mark.run(order=1)
     @data(*get_csv_data("testdata.csv"))  # * means there could be multiple arguments

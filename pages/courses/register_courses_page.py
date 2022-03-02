@@ -29,7 +29,7 @@ class RegisterCoursesPage(SeleniumDriver):
         :return:
         """
         self.driver.get(Config.ALL_COURSES_PAGE)
-        self.element_send_keys(name + Keys.ENTER, self._search_box)
+        self.element_send_keys(name + Keys.ENTER, Config.COURSES_SEARCH_BOX)
 
     def select_course_to_enroll(self, full_course_name):
         """
@@ -38,7 +38,7 @@ class RegisterCoursesPage(SeleniumDriver):
         :param full_course_name:
         :return:
         """
-        by_type, locator = self._all_courses
+        by_type, locator = Config.COURSES_ALL_COURSES
         locator = locator.format(full_course_name)
         locator_tuple = (by_type, locator)
         self.element_click(locator_tuple)
@@ -49,9 +49,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param num:
         :return:
         """
-        # self.switch_frame_by_index(locator=self._cc_num)
+        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_NUM_FIELD)
         self.driver.switch_to.frame(0)
-        self.element_send_keys(num, self._cc_num)
+        self.element_send_keys(num, Config.COURSES_CREDIT_CARD_NUM_FIELD)
         self.driver.switch_to.default_content()
 
     def enter_card_exp(self, exp):
@@ -60,9 +60,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param exp:
         :return:
         """
-        # self.switch_frame_by_index(locator=self._cc_exp)
+        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_EXP_FIELD)
         self.driver.switch_to.frame(1)
-        self.element_send_keys(exp, self._cc_exp)
+        self.element_send_keys(exp, Config.COURSES_CREDIT_CARD_EXP_FIELD)
         self.driver.switch_to.default_content()
 
     def enter_card_cvv(self, cvv):
@@ -71,9 +71,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param cvv:
         :return:
         """
-        # self.switch_frame_by_index(locator=self._cc_cvv)
+        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_CVV)
         self.driver.switch_to.frame(2)
-        self.element_send_keys(cvv, self._cc_cvv)
+        self.element_send_keys(cvv, Config.COURSES_CREDIT_CARD_CVV)
         self.driver.switch_to.default_content()
 
     def click_enroll_submit_button(self):
@@ -110,7 +110,7 @@ class RegisterCoursesPage(SeleniumDriver):
         self.click_enroll_submit_button()
         self.scroll_down()
         self.enter_credit_card_info(num, exp, cvv)
-        # self.element_click(locator=self._submit_enroll)
+        # self.element_click(locator=self.COURSES_SUBMIT_BUTTON)
 
     def verify_enroll_failed(self):
         """
@@ -118,7 +118,7 @@ class RegisterCoursesPage(SeleniumDriver):
         Need to wait sometimes a little for it to show
         :return:
         """
-        error_info = self.wait_for_element(self._enroll_error_message)
-        return self.is_element_displayed(self._enroll_error_message)
+        # error_info = self.wait_for_element(Config.COURSES_ENROLL_ERROR_MESSAGE)
+        return self.is_element_displayed(Config.COURSES_ENROLL_ERROR_MESSAGE)
 
 
