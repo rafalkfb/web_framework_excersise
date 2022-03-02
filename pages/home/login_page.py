@@ -32,7 +32,7 @@ class LoginPage(SeleniumDriver):
         self.click_login_button()
 
     def verify_successful_login(self):
-        result = self.is_element_present(Config.ELEMENT_TO_VERIFY_SUCCESSFUL_LOGIN)
+        result = self.is_element_present(Config.NAVIGATION_USER_TRIANGLE)
         return result
 
     def verify_login_failed(self):

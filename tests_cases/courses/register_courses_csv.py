@@ -7,6 +7,7 @@ from utilities.checkteststatus import CheckTestStatus
 from ddt import ddt, data, unpack
 from utilities.read_data import get_csv_data
 from configfiles.config_data import Config
+from pages.home.navigation_panel import NavigationPanel
 
 
 @pytest.mark.usefixtures("one_time_set_up")
@@ -20,11 +21,12 @@ class RegisterCoursesCSVTests(unittest.TestCase):
         # self.log_page.login("test@email.com", "abcabc")
         self.test_status = CheckTestStatus(self.driver)
         self.courses = RegisterCoursesPage(self.driver)
+        self.navigation_panel = NavigationPanel(self.driver)
 
     def setUp(self) -> None:
         yield
         # return to all page courses after each test
-        self.courses.element_click(Config.ALL_COURSES_PAGE)
+        self.navigation_panel.click_all_courses()
 
     @pytest.mark.run(order=1)
     @data(*get_csv_data("testdata.csv"))  # * means there could be multiple arguments

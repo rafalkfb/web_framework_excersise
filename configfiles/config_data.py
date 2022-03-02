@@ -8,12 +8,18 @@ class Config:
     LOGIN_EMAIL = "test@email.com"
     LOGIN_PASSWORD = "abcabc"
 
+    # Navigation panel
+    NAVIGATION_USER_TRIANGLE = (By.XPATH, "//a[@class='dynamic-link']//span[@class='caret']")
+    NAVIGATION_HOME = (By.LINK_TEXT, "HOME")
+    NAVIGATION_ALL_COURSES = (By.LINK_TEXT, "ALL COURSES")
+    NAVIGATION_SUPPORT = (By.LINK_TEXT, "SUPPORT")
+    NAVIGATION_MY_COURSES = (By.LINK_TEXT, "MY COURSES")
+
     # Login page locators
     LINK_TO_LOGIN_PAGE = (By.XPATH, "//a[@href='/login']")
     LOGIN_PAGE_EMAIL_FIELD = (By.ID, "email")
     LOGIN_PAGE_PASSWORD_FIELD = (By.ID, "password")
     LOGIN_PAGE_LOGIN_BUTTON = (By.XPATH, "//input[@type='submit']")
-    ELEMENT_TO_VERIFY_SUCCESSFUL_LOGIN = (By.XPATH, "//a[@class='dynamic-link']//span[@class='caret']")
     LOGIN_PAGE_INCORRECT_CREDENTIALS_INFO = (By.XPATH, "//span[contains(text(), 'username or password is invalid')]")
 
     # Courses locators
