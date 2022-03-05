@@ -30,7 +30,6 @@ class LoginTests(unittest.TestCase):
 
     @pytest.mark.run(order=1)
     def test_invalid_login(self):
-        # self.driver.get(self.base_url)
         self.navigation_panel.click_logout()
         self.log_page.login("test@email.com", "assbcabc")
 

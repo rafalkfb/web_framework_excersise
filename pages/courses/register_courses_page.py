@@ -1,25 +1,30 @@
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from base.selenium_driver import *
-from configfiles.config_data import Config
+from base.selenium_driver import SeleniumDriver
+from utilities.custom_logger import custom_log
+import logging
+from pages.home.navigation_panel import NavigationPanel
 
 
 class RegisterCoursesPage(SeleniumDriver):
     
     # overrides object from SeleniumDriver, so the name will indicate that the error comes from this class
-    log = cl.custom_log(log_level=logging.DEBUG)
+    log = custom_log(log_level=logging.DEBUG)
     
     def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
+        self.navigation_panel = NavigationPanel(driver)
 
-    _search_box = (By.CSS_SELECTOR, "input#search")      # "//input[@id='search']"
-    _all_courses = (By.XPATH, "//h4[@class='dynamic-heading' and contains(text(), '{0}')]")
-    _enroll_button = (By.XPATH, "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']")
-    _cc_num = (By.XPATH, "//input[@name='cardnumber']")  # driver.switch_to.frame(0) ?
-    _cc_exp = (By.XPATH, "//input[@name='exp-date']")  # driver.switch_to.frame(1)
-    _cc_cvv = (By.XPATH, "//input[@name='cvc']")  # driver.switch_to.frame(2)
-    _submit_enroll = (By.XPATH, "//button[contains(@class, 'sp-buy')]")  # driver.switch_to.default_content()
-    _enroll_error_message = (By.XPATH, "//span[normalize-space()='Your card number is invalid.']")
+    # locators
+    search_box = (By.CSS_SELECTOR, "input#search")  # "//input[@id='search']"
+    all_courses = (By.XPATH, "//h4[@class='dynamic-heading' and contains(text(), '{0}')]")
+    enroll_button = (By.XPATH, "//button[@class='dynamic-button btn btn-default btn-lg btn-enroll']")
+    credit_card_num_field = (By.XPATH, "//input[@name='cardnumber']")  # driver.switch_to.frame(0) ?
+    credit_card_exp_field = (By.XPATH, "//input[@name='exp-date']")  # driver.switch_to.frame(1)
+    credit_card_cvv_field = (By.XPATH, "//input[@name='cvc']")  # driver.switch_to.frame(2)
+    submit_button = (By.XPATH, "//button[contains(@class, 'sp-buy')]")  # driver.switch_to.default_content()
+    enroll_error_message = (By.XPATH, "//span[normalize-space()='Your card number is invalid.']")
 
     def enter_course_name(self, name):
         """
@@ -28,8 +33,8 @@ class RegisterCoursesPage(SeleniumDriver):
         :param name:
         :return:
         """
-        self.driver.get(Config.ALL_COURSES_PAGE)
-        self.element_send_keys(name + Keys.ENTER, Config.COURSES_SEARCH_BOX)
+        self.navigation_panel.click_all_courses()
+        self.element_send_keys(name + Keys.ENTER, self.search_box)
 
     def select_course_to_enroll(self, full_course_name):
         """
@@ -38,7 +43,7 @@ class RegisterCoursesPage(SeleniumDriver):
         :param full_course_name:
         :return:
         """
-        by_type, locator = Config.COURSES_ALL_COURSES
+        by_type, locator = self.all_courses
         locator = locator.format(full_course_name)
         locator_tuple = (by_type, locator)
         self.element_click(locator_tuple)
@@ -49,9 +54,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param num:
         :return:
         """
-        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_NUM_FIELD)
+        # self.switch_frame_by_index(locator=self.credit_card_num_field)
         self.driver.switch_to.frame(0)
-        self.element_send_keys(num, Config.COURSES_CREDIT_CARD_NUM_FIELD)
+        self.element_send_keys(num, self.credit_card_num_field)
         self.driver.switch_to.default_content()
 
     def enter_card_exp(self, exp):
@@ -60,9 +65,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param exp:
         :return:
         """
-        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_EXP_FIELD)
+        # self.switch_frame_by_index(locator=self.credit_card_exp_field)
         self.driver.switch_to.frame(1)
-        self.element_send_keys(exp, Config.COURSES_CREDIT_CARD_EXP_FIELD)
+        self.element_send_keys(exp, self.credit_card_exp_field)
         self.driver.switch_to.default_content()
 
     def enter_card_cvv(self, cvv):
@@ -71,9 +76,9 @@ class RegisterCoursesPage(SeleniumDriver):
         :param cvv:
         :return:
         """
-        # self.switch_frame_by_index(locator=self.COURSES_CREDIT_CARD_CVV)
+        # self.switch_frame_by_index(locator=self.credit_card_cvv_field)
         self.driver.switch_to.frame(2)
-        self.element_send_keys(cvv, Config.COURSES_CREDIT_CARD_CVV)
+        self.element_send_keys(cvv, self.credit_card_cvv_field)
         self.driver.switch_to.default_content()
 
     def click_enroll_submit_button(self):
@@ -81,7 +86,7 @@ class RegisterCoursesPage(SeleniumDriver):
         Click enroll button
         :return:
         """
-        self.element_click(self._enroll_button)
+        self.element_click(self.enroll_button)
 
     def enter_credit_card_info(self, num, exp, cvv):
         """
@@ -110,7 +115,7 @@ class RegisterCoursesPage(SeleniumDriver):
         self.click_enroll_submit_button()
         self.scroll_down()
         self.enter_credit_card_info(num, exp, cvv)
-        # self.element_click(locator=self.COURSES_SUBMIT_BUTTON)
+        # self.element_click(locator=self.submit_button)
 
     def verify_enroll_failed(self):
         """
@@ -118,7 +123,5 @@ class RegisterCoursesPage(SeleniumDriver):
         Need to wait sometimes a little for it to show
         :return:
         """
-        # error_info = self.wait_for_element(Config.COURSES_ENROLL_ERROR_MESSAGE)
-        return self.is_element_displayed(Config.COURSES_ENROLL_ERROR_MESSAGE)
-
-
+        # error_info = self.wait_for_element(Config.enroll_error_message)
+        return self.is_element_displayed(self.enroll_error_message)

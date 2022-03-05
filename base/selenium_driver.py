@@ -1,10 +1,13 @@
 import logging
 import time
 from traceback import print_stack
+
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.common.exceptions import *
-from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException, \
+    ElementNotSelectableException
+from selenium.common.exceptions import TimeoutException
 import utilities.custom_logger as cl
 import os
 
@@ -40,6 +43,7 @@ class SeleniumDriver:
             print_stack()
 
     def get_title(self):
+
         return self.driver.title
 
     def get_element(self, locator_tuple):
@@ -195,9 +199,8 @@ class SeleniumDriver:
             else:
                 self.log.error("### Given title: " + title + "   does not match with actual title: " + self.get_title())
                 return False
-        except:
+        except :
             self.log.error("### Failed to get page title")
-            return False
 
     def scroll_down(self, how_much=-1000):
         """

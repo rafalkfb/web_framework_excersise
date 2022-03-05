@@ -1,5 +1,4 @@
 import pytest
-
 from pages.courses.register_courses_page import RegisterCoursesPage
 import unittest
 from utilities.checkteststatus import CheckTestStatus
@@ -29,4 +28,3 @@ class RegisterCoursesMultiplyTests(unittest.TestCase):
         result = self.courses.verify_enroll_failed()
         self.test_status.mark_final("is error displayed", result, "error is not displayed")
         self.courses.element_click("ALL COURSES", 'linktext')
-        # self.driver.find_element(By.LINK_TEXT, "All Courses").click()

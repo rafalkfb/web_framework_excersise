@@ -1,12 +1,9 @@
 import pytest
-from selenium.webdriver.common.by import By
-
 from pages.courses.register_courses_page import RegisterCoursesPage
 import unittest
 from utilities.checkteststatus import CheckTestStatus
 from ddt import ddt, data, unpack
 from utilities.read_data import get_csv_data
-from configfiles.config_data import Config
 from pages.home.navigation_panel import NavigationPanel
 
 
@@ -37,5 +34,3 @@ class RegisterCoursesCSVTests(unittest.TestCase):
         self.courses.enroll_course(credit_card_num, credit_card_exp, credit_card_cvv)
         result = self.courses.verify_enroll_failed()
         self.test_status.mark_final("is error displayed", result, "error is not displayed")
-
-        # self.driver.find_element(By.LINK_TEXT, "All Courses").click()
